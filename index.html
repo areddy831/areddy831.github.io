@@ -1,30 +1,27 @@
 <html>
+  <head>
+    <meta charset="utf-8">
+    <title>image-segmenter</title>
+  </head>
+  <body>
+    <div style="margin: 20px;">
+      <h1>image-segmenter</h1>
+      <div style="padding: 10px;">
+        <button id="modelload" onclick="loadModel();">load model</button>
+        <input id="modelimage" type="file" name="filename" accept="image/gif, image/jpeg, image/png" onchange="loadImage(this);" disabled>
+        <button id="modelrun" onclick="runModel();" disabled>run model</button>
+      </div>
 
+      <div style="padding: 10px;">
+        <div id="capimg" style="position:relative;display:inline-block;min-width:600px;vertical-align:top;">
+          <canvas id="canvasimage" style="z-index:1; position:absolute; left:0px; top:0px;"></canvas>
+          <canvas id="canvassegments" style="z-index:2; position:absolute; left:0px; top:0px;"></canvas>
+        </div>
+        <div id="message" style="position:relative;display:inline-block;"></div>
+      </div>
+    </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-
-
-const MODEL_URL = "web_model/model.json"
-
-
-
-const model = await tf.loadGraphModel(MODEL_URL)
-
-const imageTensor = tf.browser.fromPixels(imageElement)
-
-
-
-// insert a dimension into the tensor's shape
-
-const preprocessedInput = imageTensor.expandDims(300,300,3)
-
-
-
-// generates output prediction
-
-const prediction = model.predict(preprocessedInput)
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.1.2"></script>
+    <script src="image-segmenter.js"></script>
+  </body>
 </html>
