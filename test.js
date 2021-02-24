@@ -82,7 +82,7 @@ get the prediction
 */
 function predict(imgData) {
 
-        var class_names = ['NO_IDC','Contains_IDC']
+        var class_names = ['Baroque','NeoClassical','Gothic','Modern','Victorian']
         //get the prediction
         var pred = model.predict(preprocess(imgData)).dataSync()
         console.log(pred)
