@@ -1,4 +1,3 @@
-
 <html>
 
 
@@ -6,8 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 
 
-
-const MODEL_URL = '/web_model/model.json'
+const MODEL_URL = "web_model/model.json"
 
 
 
@@ -21,12 +19,12 @@ const imageTensor = tf.browser.fromPixels(imageElement)
 
 const preprocessedInput = imageTensor.expandDims(300,300,3)
 
-  
+
 
 // generates output prediction
 
 const prediction = model.predict(preprocessedInput)
 
-  
+
 
 </html>
