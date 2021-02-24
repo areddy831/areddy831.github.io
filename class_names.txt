@@ -1,5 +1,5 @@
 Baroque
 NeoClassical
 Gothic
-Modern/Contemporary
+Modern
 Victorian
