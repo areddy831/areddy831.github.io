@@ -2,13 +2,18 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
 <head></head>
 <body>
- <img id="imgcanvas" height="300" width="300" src="cat.jpg"></img>
+ <p>Click on the "Choose File" button to upload a file:</p>
+
+<form action="/action_page.php">
+  <input type="file" id="myFile" name="filename">
+  <input type="submit">
+</form>
 </body>
 <script>
 async function run(){
-  const image = tf.browser.fromPixels(imgcanvas);
+  const image = tf.browser.fromPixels(myFile);
   const resized_image =
-       tf.image.resizeBilinear(image, [150,150]).toFloat();
+       tf.image.resizeBilinear(image, [300,300]).toFloat();
   const offset = tf.scalar(255.0);
   const normalized = tf.scalar(1.0).sub(resized_image.div(offset));
   const batchedImage = normalized.expandDims(0);
