@@ -2,43 +2,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
 <head></head>
 <body>
-</div>
-<script>
-$(function(){
-  $("input[type='Submit']").click(function(){
-      var $fileUpload = $("input[type='file']");
-      if (parseInt($fileUpload.get(0).files.length)>1){
-       alert("You can only upload 1 file at a time");
-      }
-  });
-});
-function clearFileInput(id)
-{
-  var oldInput = document.getElementById(id);
-
-  var newInput = document.createElement("input");
-
-  newInput.type = "file";
-  newInput.id = oldInput.id;
-  newInput.name = oldInput.name;
-  newInput.className = oldInput.className;
-  newInput.style.cssText = oldInput.style.cssText;
-  // TODO: copy any other relevant attributes
-
-  oldInput.parentNode.replaceChild(newInput, oldInput);
-}
-</script>
-<input type="file" id="files" name="files[]" accept=".jpg, .jpeg, .png"/>
-<output id="list"></output>
-<button type="button" value="Submit" onclick = "start()">submit</button>
-<div>
- <img id="imgcanvas" height="300" width="300" src="file"></img>
+ <img id="imgcanvas" height="300" width="300" src="cat.jpg"></img>
 </body>
 <script>
 async function run(){
   const image = tf.browser.fromPixels(imgcanvas);
   const resized_image =
-       tf.image.resizeBilinear(image, [300,300]).toFloat();
+       tf.image.resizeBilinear(image, [150,150]).toFloat();
   const offset = tf.scalar(255.0);
   const normalized = tf.scalar(1.0).sub(resized_image.div(offset));
   const batchedImage = normalized.expandDims(0);
