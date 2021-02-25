@@ -1,20 +1,14 @@
-model = await tf.loadModel('web_model/model.json')
-
-function preprocess(img)
-{
-
-    //convert the image data to a tensor
-    let tensor = tf.fromPixels(img)
-    //resize to 300 X 300
-    const resized = tf.image.resizeBilinear(tensor, [300, 300]).toFloat()
-    // Normalize the image
-    const offset = tf.scalar(255.0);
-    const normalized = tf.scalar(1.0).sub(resized.div(offset));
-    //We add a dimension to get a batch shape
-    const batched = normalized.expandDims(0)
-    return batched
+async function run(){
+  const image = tf.browser.fromPixels(imgcanvas);
+  const resized_image =
+       tf.image.resizeBilinear(image, [300,300]).toFloat();
+  const offset = tf.scalar(255.0);
+  const normalized = tf.scalar(1.0).sub(resized_image.div(offset));
+  const batchedImage = normalized.expandDims(0);
+  const MODEL_URL = 'web_model/model.json';
+  const model = await tf.loadLayersModel(MODEL_URL);
+  const result = model.predict(batchedImage);
+  result.print();
 
 }
-
-
-const pred = model.predict(preprocess(img)).dataSync()
+run();
