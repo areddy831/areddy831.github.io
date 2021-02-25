@@ -7,11 +7,12 @@
 <form action="/action_page.php">
   <input type="file" id="myFile" name="filename">
   <input type="submit">
+   <img id="imgcanvas" height="300" width="300" src="filename"></img>
 </form>
 </body>
 <script>
 async function run(){
-  const image = tf.browser.fromPixels(myFile);
+  const image = tf.browser.fromPixels(imgcanvas);
   const resized_image =
        tf.image.resizeBilinear(image, [300,300]).toFloat();
   const offset = tf.scalar(255.0);
