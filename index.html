@@ -2,25 +2,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 4</p>
- <p>Click on the "Choose File" button to upload a file:</p>
+<p>Architectural Style Classifier 2</p>
 
-<form action="/action_page.php">
-  <input type="file" id="myFile" name="filename">
-  <input type="submit">
-</form>
-<script type="text/javascript">
-function submitform()
-{
-    if(document.myFile.onsubmit &&
-    !document.myFile.onsubmit())
-    {
-        return;
-    }
- document.myform.submit();
-}
-</script>
-<img id="myFile" height="300" width="300"></img>
+<img id="imgcanvas" height="1178" width="1600" src='testimage1.jpg'></img>
 </body>
 <script>
 async function run(){
