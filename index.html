@@ -1,13 +1,13 @@
 <html>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest" lang="js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest" type="text/javascript"> </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.5</p>
+<p>Architectural Style Classifier 1.6</p>
 
 <img id="imgcanvas" height="1178" width="1600" src='testimage1.jpg'></img>
 
 </body>
-<script lang="js">
+<script type="text/javascript">
 async function run(){
   const image = tf.browser.fromPixels(imgcanvas);
   const resized_image =
