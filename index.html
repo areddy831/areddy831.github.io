@@ -1,11 +1,24 @@
 <html>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest" lang="js"> </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" height="1178" width="1600" src='testimage1.jpg'></img>
 
 </body>
-<script src ="architecturalstyleclassifier.js"></script>
+<script lang="js">
+async function run(){
+  const image = tf.browser.fromPixels(imgcanvas);
+  const resized_image =
+       tf.image.resizeBilinear(image, [300,300]).toFloat();
+  const offset = tf.scalar(255.0);
+  const normalized = tf.scalar(1.0).sub(resized_image.div(offset));
+  const MODEL_URL = 'https://areddy831.github.io/web_model/model.json';
+  const model = await tf.loadLayersModel(MODEL_URL);
+  const result = model.predict(batchedImage);
+  result.print();
+}
+run();
+</script>
 </html>
