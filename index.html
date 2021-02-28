@@ -2,18 +2,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"> </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.3</p>
+<p>Architectural Style Classifier 1.4</p>
 
 <img id="imgcanvas" height="300" src='testimage1.jpg'></img>
 
 </body>
 <script type="text/javascript">
 async function run(){
-  const image = tf.browser.fromPixels(imgcanvas);
-  const resized_image = tf.image.resizeBilinear(image, [300,300]).toFloat();
-  const offset = tf.scalar(255.0);
-  const normalized = tf.scalar(1.0).sub(resized_image.div(offset));
-  const batchedImage = normalized.expandDims(0);
+  const batchedImage = tf.keras.applications.vgg19.preprocess_input(
+    imgcanvas, data_format=None
+)
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
   const result = model.predict(batchedImage);
