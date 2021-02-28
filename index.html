@@ -1,8 +1,13 @@
 <html>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"> </script>
+<script type="text/javascript">
+     // set the pyodide files URL (packages.json, pyodide.asm.data etc)
+     window.languagePluginUrl = 'https://cdn.jsdelivr.net/pyodide/v0.16.1/full/';
+ </script>
+ <script src="https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js"></script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" height="300" src='testimage1.jpg'></img>
 
@@ -10,7 +15,7 @@
 <script type="text/javascript">
 async function run(){
   const image = tf.browser.fromPixels(imgcanvas);
-  const batchedImage = tf.compat.v1.keras.applications.vgg19.preprocess_input(image);
+  const batchedImage = pyodide.globals.tf.keras.applications.vgg19.preprocess_input(image);
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
   const result = model.predict(batchedImage);
