@@ -2,13 +2,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"> </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.6</p>
+<p>Architectural Style Classifier 1.0</p>
 
 <img id="imgcanvas" height="300" src='testimage1.jpg'></img>
 
 </body>
 <script type="text/javascript">
 async function run(){
+  const vgg19 = tf.keras.applications.VGG19(weights='imagenet', include_top=False)
   const image = tf.browser.fromPixels(imgcanvas);
   const batchedImage = tf.keras.applications.vgg19.preprocess_input(image, data_format=None)
   const MODEL_URL = 'web_model/model.json';
