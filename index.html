@@ -14,7 +14,7 @@ async function run(){
 
   const image = tf.browser.fromPixels(imgcanvas);
   const resized_image =
-        tf.image.resizeBilinear(image, [300,300]).toFloat();
+        tf.image.resizeBilinear(image, [300,300]);
   const batchedImage = resized_image.expandDims(0);
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
