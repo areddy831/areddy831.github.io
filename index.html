@@ -9,13 +9,13 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.2</p>
+<p>Architectural Style Classifier 1.0</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
 </body>
 <script type="text/javascript">
-async function run(){
+  async function run(){
 
   const image = tf.browser.fromPixels(imgcanvas);
   const batchedImage = languagePluginLoader.then(function () {
@@ -33,6 +33,8 @@ async function run(){
   const model = await tf.loadGraphModel(MODEL_URL);
   const result = model.predict(batchedImage);
   result.print();
+
+}
 run();
 </script>
 </html>
