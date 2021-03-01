@@ -4,7 +4,7 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
@@ -18,9 +18,10 @@ async function run(){
   const offset = tf.scalar(255.0);
   const normalized = tf.scalar(512.0).sub(resized_image.div(offset));
   const batchedImage = normalized.expandDims(0);
+  const reshapedImage = tf.tensor4d(batchedImage,[-1, 9, 9, 512])
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
-  const result = model.predict(batchedImage);
+  const result = model.predict(reshapedImage);
   result.print();
 }
 run();
