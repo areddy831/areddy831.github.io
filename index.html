@@ -12,7 +12,7 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
@@ -20,7 +20,10 @@
 <script type="text/javascript">
 async function run(){
   const image = tf.browser.fromPixels(imgcanvas);
-  const batchedImage = pyodide.globals.tf.keras.applications.vgg19.preprocess_input(image);
+  const batchedImage = languagePluginLoader.then(() => {
+   // pyodide is now ready to use...
+   console.log(pyodide.runPython('tf.keras.applications.vgg19.preprocess_input(image)'));
+ });
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
   const result = model.predict(batchedImage);
