@@ -3,7 +3,7 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.9</p>
+<p>Architectural Style Classifier 1.0</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
@@ -13,7 +13,6 @@ async function run(){
 
   const image = tf.browser.fromPixels(imgcanvas);
   const ModelImage = tf.sequential({
-    layers: [tf.layers.conv2d({inputShape=[300, 300, 3], kernelSize: (3,3),
     layers: [tf.layers.conv2d({inputShape: [300, 300, 3], kernelSize: (3,3),
   filters: 64,
   padding: 'same',
