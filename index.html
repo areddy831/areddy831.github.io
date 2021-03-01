@@ -9,7 +9,7 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.1</p>
+<p>Architectural Style Classifier 1.2</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
@@ -27,7 +27,8 @@ async function run(){
           from tensorflow.keras import applications
           tf.keras.applications.vgg19.preprocess_input(
             image, data_format=None
-      `))});
+      `));
+    });
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
   const result = model.predict(batchedImage);
