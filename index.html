@@ -5,9 +5,14 @@
      window.languagePluginUrl = 'https://cdn.jsdelivr.net/pyodide/v0.16.1/full/';
  </script>
  <script src="https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js"></script>
+ <script type="text/javascript">languagePluginLoader.then(() => {
+  // pyodide is now ready to use...
+  console.log(pyodide.runPython('import sys\nsys.version'));
+});
+</script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.1</p>
+<p>Architectural Style Classifier 1.2</p>
 
 <img id="imgcanvas" height="300" src='testimage1.jpg'></img>
 
