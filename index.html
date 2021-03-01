@@ -4,19 +4,84 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
 </body>
 <script type="text/javascript">
 async function run(){
+
   const image = tf.browser.fromPixels(imgcanvas);
-  const ResizedImage = tf.image.resizeBilinear(image, [300, 300])
-  const shapeImage = tf.reshape([1, ResizedImage.shape[0], ResizedImage.shape[1], ResizedImage.shape[2]])
+  const ModelImage = tf.sequential({
+    layers: [tf.layers.conv2d({inputShape=[300, 300, 3], kernelSize: (3,3),
+  filters: 64,
+  padding: 'same',
+  activation: 'relu'}),
+  tf.layers.conv2d({ kernelSize: (3,3),
+filters: 64,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.maxPooling2d({ poolSize: (2,2),
+strides: (2,2)}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 128,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 128,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.maxPooling2d({ poolSize: (2,2),
+strides: (2,2)}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 256,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 256,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 256,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.maxPooling2d({ poolSize: (2,2),
+strides: (2,2)}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 512,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 512,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 512,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.maxPooling2d({ poolSize: (2,2),
+strides: (2,2)}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 512,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 512,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.conv2d({ kernelSize: (3,3),
+filters: 512,
+padding: 'same',
+activation: 'relu'}),
+tf.layers.maxPooling2d({ poolSize: (2,2),
+strides: (2,2)}),
+
+           ]
+  })
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
-  const result = model.predict(shapeImage);
+  const result = model.predict(ModelImage);
   result.print();
 }
 run();
