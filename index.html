@@ -4,7 +4,7 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
@@ -13,72 +13,11 @@
 async function run(){
 
   const image = tf.browser.fromPixels(imgcanvas);
-  const ModelImage = tf.sequential({
-    layers: [tf.layers.conv2d({inputShape: [300, 300, 3], kernelSize: (3,3),
-  filters: 64,
-  padding: 'same',
-  activation: 'relu'}),
-  tf.layers.conv2d({ kernelSize: (3,3),
-filters: 64,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.maxPooling2d({ poolSize: (2,2),
-strides: (2,2)}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 128,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 128,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.maxPooling2d({ poolSize: (2,2),
-strides: (2,2)}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 256,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 256,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 256,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.maxPooling2d({ poolSize: (2,2),
-strides: (2,2)}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 512,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 512,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 512,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.maxPooling2d({ poolSize: (2,2),
-strides: (2,2)}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 512,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 512,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.conv2d({ kernelSize: (3,3),
-filters: 512,
-padding: 'same',
-activation: 'relu'}),
-tf.layers.maxPooling2d({ poolSize: (2,2),
-strides: (2,2)}),
-
-           ]
-  })
+  const resized_image =
+       tf.image.resizeBilinear(image, [150,150]).toFloat();
+  const offset = tf.scalar(255.0);
+  const normalized = tf.scalar(1.0).sub(resized_image.div(offset));
+  const batchedImage = normalized.expandDims(0);
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
   const result = model.predict(ModelImage);
