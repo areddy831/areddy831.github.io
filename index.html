@@ -17,7 +17,7 @@ async function run(){
   const batchedImage = resized_image.expandDims(0);
   const MODEL_URL = 'web_model/model.json';
   const model = await tf.loadGraphModel(MODEL_URL);
-  const result = model.execute(image);
+  const result = model.execute(batchedimage);
   result.print();
 }
 run();
