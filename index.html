@@ -4,7 +4,7 @@
 </script>
 <head></head>
 <body>
-<p>Architectural Style Classifier 1.0</p>
+<p>Architectural Style Classifier 1.1</p>
 
 <img id="imgcanvas" width="300" height="300" src='testimage1.jpg'></img>
 
@@ -15,10 +15,9 @@ async function run(){
   const image = tf.browser.fromPixels(imgcanvas);
   const resizedimage = tf.image.resizeBilinear(image, [300,300]).toFloat();
   const batchedimage = tf.expandDims(resizedimage, axis=0);
-  const stackedimage = tf.stack([batchedimage]);
   const MODEL_URL = 'web_model/model.json';
-  const model = await tf.loadGraphModel(MODEL_URL);
-  const result = model.predict(stackedimage);
+  const model = await tf.loadLayersModel(MODEL_URL);
+  const result = model.predict(batchedimage);
   result.print();
 }
 run();
