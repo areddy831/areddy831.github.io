@@ -11,6 +11,7 @@
 
 <body>
     <h3 id="status">Select image to classify</h3>
+    <h3 id="breakdown"></h3>
     <input type="file" id="fileSelector" accept=".jpg, .jpeg, .png">
 
     <img id="inputImage" alt="The selected image" />
@@ -56,10 +57,10 @@
         const predictImage = async () => {
             // load VGG 19 as the model profiled (web_model/model.json) was trained only on VGG features, not end-to-end pixels
             // as such we must first obtain features from VGG19 before running the main model to get the archtect style prediction
-            status.textContent = "VGG Model loading..."
+            status.textContent = "VGG19 (pre-trained image classifier) Model loading..."
             const VGG19Model = await tf.loadLayersModel(VGG19_MODEL_URL);
 
-            status.textContent = "Arch Model loading..."
+            status.textContent = "Arch Model (pre-trained image classifier) loading..."
             const model = await tf.loadGraphModel(MODEL_URL);
 
             status.textContent = "Models are loaded!"
@@ -68,15 +69,16 @@
             const resizedImageTF = tf.image.resizeBilinear(imageTF, [300, 300])
             const batchedImageTF = resizedImageTF.expandDims(0)
             const batchedImageNormedTF = tf.div(batchedImageTF, 255);
-            status.textContent = "running VGG"
+            status.textContent = "running VGG19 (pre-trained image classifier)"
             const vgg19Feats = await VGG19Model.predict(batchedImageNormedTF)
-            status.textContent = "running archtecture model"
+            status.textContent = "running architectural style classifier"
             const predictions = await model.predict(vgg19Feats);
 
             const predictionIdx = tf.argMax(predictions, 1).arraySync();
             const predictionClass = classNames[predictionIdx]
 
             status.textContent = 'Prediction: ' + predictionClass;
+            breakdown.textContent = predictions;
 
             //console.log('Prediction: ', predictionClass);
             console.log('Raw Predictions: ', predictions.arraySync());
