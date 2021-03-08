@@ -11,7 +11,7 @@
 
 <body>
     <h3 id="status">Select image to classify</h3>
-    <h3 id="breakdown"></h3>
+    <h3 id="breakdown">Breakdown</h3>
     <input type="file" id="fileSelector" accept=".jpg, .jpeg, .png">
 
     <img id="inputImage" alt="The selected image" />
@@ -76,6 +76,7 @@
 
             const predictionIdx = tf.argMax(predictions, 1).arraySync();
             const predictionClass = classNames[predictionIdx]
+            const breakdowns = predictions.arraySync();
 
             status.textContent = 'Prediction: ' + predictionClass;
             breakdown.textContent = predictions;
