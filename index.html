@@ -60,7 +60,7 @@
             status.textContent = "VGG19 (pre-trained image classifier) Model loading..."
             const VGG19Model = await tf.loadLayersModel(VGG19_MODEL_URL);
 
-            status.textContent = "Arch Model (pre-trained image classifier) loading..."
+            status.textContent = "architectural style classifier loading..."
             const model = await tf.loadGraphModel(MODEL_URL);
 
             status.textContent = "Models are loaded!"
