@@ -76,7 +76,7 @@
 
             const predictionIdx = tf.argMax(predictions, 1).arraySync();
             const predictionClass = classNames[predictionIdx]
-            const breakdowns = predictions.arraySync();
+            const breakdowns = predictions.arraySync()*100;
 
             status.textContent = 'Prediction: ' + predictionClass;
             breakdown.textContent = predictions;
