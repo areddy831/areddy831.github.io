@@ -1,0 +1,89 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Architectural Style Classifier</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"> </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <h3 id="status">Select image to classify</h3>
+    <input type="file" id="fileSelector" accept=".jpg, .jpeg, .png">
+
+    <img id="inputImage" alt="The selected image" />
+
+    <script>
+        const img = document.getElementById('inputImage');
+        const status = document.getElementById('status');
+
+        const VGG19_MODEL_URL = 'vggTFJS/model.json';
+        const MODEL_URL = 'web_model/model.json';
+        const classNames = ["Baroque", "NeoClassical", "Gothic", "Modern", "Victorian"]
+
+        const init = () => {
+            const inputImage = document.getElementById('inputImage');
+            if (window.FileList && window.File && window.FileReader) {
+                const fileSelector = document.getElementById('fileSelector')
+                fileSelector.addEventListener('change', event => {
+                    if (fileSelector.files && fileSelector.files[0]) {
+                        inputImage.src = '';
+                        status.textContent = '';
+                        const file = event.target.files[0];
+                        if (!file.type) {
+                            status.textContent = 'Error: The File.type property does not appear to be supported on this browser.';
+                            return;
+                        }
+                        if (!file.type.match('image.*')) {
+                            status.textContent = 'Error: The selected file does not appear to be an image.'
+                            return;
+                        }
+                        const reader = new FileReader();
+                        reader.addEventListener('load', event => {
+                            inputImage.src = event.target.result;
+                        });
+                        reader.readAsDataURL(file);
+                        status.textContent = 'Processing image ...';
+                        predictImage();
+                    }
+                });
+
+            }
+        }
+
+        const predictImage = async () => {
+            // load VGG 19 as the model profiled (web_model/model.json) was trained only on VGG features, not end-to-end pixels
+            // as such we must first obtain features from VGG19 before running the main model to get the archtect style prediction
+            status.textContent = "VGG Model loading..."
+            const VGG19Model = await tf.loadLayersModel(VGG19_MODEL_URL);
+
+            status.textContent = "Arch Model loading..."
+            const model = await tf.loadGraphModel(MODEL_URL);
+
+            status.textContent = "Models are loaded!"
+
+            const imageTF = tf.browser.fromPixels(img);
+            const resizedImageTF = tf.image.resizeBilinear(imageTF, [300, 300])
+            const batchedImageTF = resizedImageTF.expandDims(0)
+            const batchedImageNormedTF = tf.div(batchedImageTF, 255);
+            status.textContent = "running VGG"
+            const vgg19Feats = await VGG19Model.predict(batchedImageNormedTF)
+            status.textContent = "running archtecture model"
+            const predictions = await model.predict(vgg19Feats);
+
+            const predictionIdx = tf.argMax(predictions, 1).arraySync();
+            const predictionClass = classNames[predictionIdx]
+
+            status.textContent = 'Prediction: ' + predictionClass;
+
+            //console.log('Prediction: ', predictionClass);
+            console.log('Raw Predictions: ', predictions.arraySync());
+        }
+        init();
+    </script>
+
+</body>
+
+</html>
