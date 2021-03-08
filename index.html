@@ -57,7 +57,7 @@
             // load VGG 19 as the model profiled (web_model/model.json) was trained only on VGG features, not end-to-end pixels
             // as such we must first obtain features from VGG19 before running the main model to get the archtect style prediction
             status.textContent = "VGG Model loading..."
-            const VGG19Model = await tf.loadLayersModel(VGG19_MODEL_URL);
+            const VGG19Model = await tf.loadGraphModel(VGG19_MODEL_URL);
 
             status.textContent = "Arch Model loading..."
             const model = await tf.loadGraphModel(MODEL_URL);
