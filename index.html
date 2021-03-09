@@ -83,8 +83,8 @@
 
             for (var i = 0; i < classNames.length; i++) {
                 let className = classNames[i]
-                let predictionValue = finalizedPredictions[0][i]
-                    joinedText += `<h5>${className}: ${predictionValue}*100.toFixed(2)</h5>`
+                let predictionValue = finalizedPredictions[0][i*100.toFixed(2)]
+                    joinedText += `<h5>${className}: ${predictionValue}</h5>`
                     }
             status.innerHTML = joinedText;
             //console.log('Prediction: ', predictionClass);
