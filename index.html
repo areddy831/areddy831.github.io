@@ -11,7 +11,7 @@
 
 <body>
     <h2>Architectural Style Classifier v1.0</h2>
-    <h2 id="notice">ML models take a few seconds to load.</h2>
+    <h2 id="notice">ML models take ~30 seconds to load the first time.</h2>
     <h2 id="status">Select image to classify</h2>
     <input type="file" id="fileSelector" accept=".jpg, .jpeg, .png">
 
@@ -84,7 +84,7 @@
             for (var i = 0; i < classNames.length; i++) {
                 let className = classNames[i]
                 let predictionValue = finalizedPredictions[0][i]
-                    joinedText += `<h5>${className}: ${predictionValue}</h5>`
+                    joinedText += `<h5>${className}: ${predictionValue}*100.toFixed(2)</h5>`
                     }
             status.innerHTML = joinedText;
             //console.log('Prediction: ', predictionClass);
