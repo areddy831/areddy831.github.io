@@ -80,13 +80,20 @@
 
             const predictionIdx = tf.argMax(predictions, 1).arraySync();
             const predictionClass = classNames[predictionIdx]
-            const breakdowns = predictions.arraySync()*100;
 
-            status.textContent = 'Prediction: ' + predictionClass;
-            breakdown.textContent = predictions;
+            const finalizedPredictions = predictions.arraySync();
+            let joinedText = 'Prediction: ' + predictionClass;
 
+            for (var i = 0; i < classNames.length; i++) {
+                let className = classNames[i]
+                let predictionValue = finalizedPredictions[0][i]
+                    joinedText += `<h5>${className}: ${predictionValue}</h5>`
+                    }
+            breakdown.innerHTML = joinedText;
             //console.log('Prediction: ', predictionClass);
             console.log('Raw Predictions: ', predictions.arraySync());
+
+            status.textContent = 'Prediction: ' + predictionClass;
         }
         init();
     </script>
