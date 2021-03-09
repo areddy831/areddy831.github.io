@@ -10,12 +10,9 @@
 </head>
 
 <body>
-    <h3>Architectural Style Classifier v1.0</h3>
-    <h2>This page is a work in progress</h2>
+    <h2>Architectural Style Classifier v1.0</h2>
+    <h3>ML models take a minute to load.</h3>
     <h2 id="status">Select image to classify</h2>
-    <h2 id="breakdown">Breakdown</h2>
-    <h2>1st#=Baroque, 2nd=NeoClassical/Classical, 3rd=Gothic, 4th=Modern, 5th=Victorian</h2>
-    <h2># represents probability(1=100%)</h2>
     <input type="file" id="fileSelector" accept=".jpg, .jpeg, .png">
 
     <img id="inputImage" alt="The selected image" height="300"/>
@@ -89,7 +86,7 @@
                 let predictionValue = finalizedPredictions[0][i]
                     joinedText += `<h5>${className}: ${predictionValue}</h5>`
                     }
-            breakdown.innerHTML = joinedText;
+            status.innerHTML = joinedText;
             //console.log('Prediction: ', predictionClass);
             console.log('Raw Predictions: ', predictions.arraySync());
 
