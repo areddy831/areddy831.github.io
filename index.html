@@ -85,7 +85,7 @@
                 let className = classNames[i]
                 let predictionValue = finalizedPredictions[0][i]*100
                 let roundedValue = predictionValue.toFixed(2)
-                    joinedText += `<h5>${className}: ${(roundedValue)}</h5>`
+                    joinedText += `<h5>${className}: ${(roundedValue)}{'%'}</h5>`
                     }
             status.innerHTML = joinedText;
             //console.log('Prediction: ', predictionClass);
