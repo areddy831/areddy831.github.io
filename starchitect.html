@@ -56,8 +56,8 @@
         }
 
         const predictImage = async () => {
-            // load VGG 19 as the model profiled (web_model/model.json) was trained only on VGG features, not end-to-end pixels
-            // as such we must first obtain features from VGG19 before running the main model to get the archtect style prediction
+            // load Resnet as the model profiled (web_model/model.json) was trained only on Resnet features, not end-to-end pixels
+            // as such we must first obtain features from Resnet before running the main model to get the archtect style prediction
             status.textContent = "Resnet Model loading..."
             const ResnetModel = await tf.loadLayersModel(resnet_MODEL_URL);
 
@@ -71,9 +71,9 @@
             const batchedImageTF = resizedImageTF.expandDims(0)
             const batchedImageNormedTF = tf.div(batchedImageTF, 255);
             status.textContent = "running resnet"
-            const vgg19Feats = await VGG19Model.predict(batchedImageNormedTF)
+            const resnetFeats = await ResnetModel.predict(batchedImageNormedTF)
             status.textContent = "running starchitect classifier"
-            const predictions = await model.predict(vgg19Feats);
+            const predictions = await model.predict(resnet19Feats);
 
             const predictionIdx = tf.argMax(predictions, 1).arraySync();
             const predictionClass = classNames[predictionIdx]
