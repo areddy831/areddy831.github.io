@@ -73,7 +73,7 @@
             status.textContent = "running resnet"
             const resnetFeats = await ResnetModel.predict(batchedImageNormedTF)
             status.textContent = "running starchitect classifier"
-            const predictions = await model.predict(resnet19Feats);
+            const predictions = await model.predict(resnetFeats);
 
             const predictionIdx = tf.argMax(predictions, 1).arraySync();
             const predictionClass = classNames[predictionIdx]
