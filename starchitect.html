@@ -1,0 +1,101 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Architectural Style Classifier</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.2.0/dist/tf.min.js"> </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <h2>Starchitect Classifier v1.0</h2>
+    <h2 id="notice">ML models take ~30 seconds to load the first time.</h2>
+    <h2 id="status">Select image to classify</h2>
+    <input type="file" id="fileSelector" accept=".jpg, .jpeg, .png">
+
+    <img id="inputImage" alt="The selected image" height="300"/>
+
+    <script>
+        const img = document.getElementById('inputImage');
+        const status = document.getElementById('status');
+
+        const resnet_MODEL_URL = 'https://areddy831.github.io/resnetTFJS/model.json';
+        const MODEL_URL = 'https://areddy831.github.io/StarchitectClassifierTFJS/model.json';
+        const classNames = ["Ben Van Berkel", "Bjarke Ingels", "Frank Gehry", "Herzog De Meuron", "Kengo Kuma", "MVRDV", "Rem Koolhaas", "Renzo Piano", "Richard Meier", "Santiago Calatrava", "Shigeru Ban", "Thom Mayne", "Zaha Hadid"]
+        const init = () => {
+            const inputImage = document.getElementById('inputImage');
+            if (window.FileList && window.File && window.FileReader) {
+                const fileSelector = document.getElementById('fileSelector')
+                fileSelector.addEventListener('change', event => {
+                    if (fileSelector.files && fileSelector.files[0]) {
+                        inputImage.src = '';
+                        status.textContent = '';
+                        const file = event.target.files[0];
+                        if (!file.type) {
+                            status.textContent = 'Error: The File.type property does not appear to be supported on this browser.';
+                            return;
+                        }
+                        if (!file.type.match('image.*')) {
+                            status.textContent = 'Error: The selected file does not appear to be an image.'
+                            return;
+                        }
+                        const reader = new FileReader();
+                        reader.addEventListener('load', event => {
+                            inputImage.src = event.target.result;
+                        });
+                        reader.readAsDataURL(file);
+                        status.textContent = 'Processing image ...';
+                        predictImage();
+                    }
+                });
+
+            }
+        }
+
+        const predictImage = async () => {
+            // load VGG 19 as the model profiled (web_model/model.json) was trained only on VGG features, not end-to-end pixels
+            // as such we must first obtain features from VGG19 before running the main model to get the archtect style prediction
+            status.textContent = "Resnet Model loading..."
+            const ResnetModel = await tf.loadLayersModel(resnet_MODEL_URL);
+
+            status.textContent = "Starchitect classifier loading..."
+            const model = await tf.loadGraphModel(MODEL_URL);
+
+            status.textContent = "Models are loaded!"
+
+            const imageTF = tf.browser.fromPixels(img);
+            const resizedImageTF = tf.image.resizeBilinear(imageTF, [300, 300])
+            const batchedImageTF = resizedImageTF.expandDims(0)
+            const batchedImageNormedTF = tf.div(batchedImageTF, 255);
+            status.textContent = "running resnet"
+            const vgg19Feats = await VGG19Model.predict(batchedImageNormedTF)
+            status.textContent = "running starchitect classifier"
+            const predictions = await model.predict(vgg19Feats);
+
+            const predictionIdx = tf.argMax(predictions, 1).arraySync();
+            const predictionClass = classNames[predictionIdx]
+
+            const finalizedPredictions = predictions.arraySync();
+            let joinedText = 'Prediction: ' + predictionClass;
+
+            for (var i = 0; i < classNames.length; i++) {
+                let className = classNames[i]
+                let predictionValue = finalizedPredictions[0][i]*100
+                let roundedValue = predictionValue.toFixed(2)
+                    joinedText += `<h5>${className}: ${roundedValue}%</h5>`
+                    }
+            status.innerHTML = joinedText;
+            //console.log('Prediction: ', predictionClass);
+            console.log('Raw Predictions: ', predictions.arraySync());
+            notice.textContent = ''
+
+        }
+        init();
+    </script>
+
+</body>
+
+</html>
