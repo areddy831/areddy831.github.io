@@ -62,7 +62,7 @@
             const ResnetModel = await tf.loadLayersModel(resnet_MODEL_URL);
 
             status.textContent = "Starchitect classifier loading..."
-            const model = await tf.loadGraphModel(MODEL_URL);
+            const model = await tf.loadLayersModel(MODEL_URL);
 
             status.textContent = "Models are loaded!"
 
