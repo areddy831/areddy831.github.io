@@ -56,8 +56,6 @@
         }
 
         const predictImage = async () => {
-            // load Resnet as the model profiled (web_model/model.json) was trained only on Resnet features, not end-to-end pixels
-            // as such we must first obtain features from Resnet before running the main model to get the archtect style prediction
             status.textContent = "Resnet Model loading..."
             const ResnetModel = await tf.loadLayersModel(resnet_MODEL_URL);
 
